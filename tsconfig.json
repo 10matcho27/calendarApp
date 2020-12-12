@@ -6,11 +6,15 @@
     "lib": ["es6", "dom"],
     "module": "es6",
     "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+        "*": ["node_modules/*", "app/javascript/*"]
+    },
+    
     "sourceMap": true,
     "target": "es5",
-    "jsx": "react",
     "allowSyntheticDefaultImports": true,  // 追加
-    "noEmit": true
+    "jsx": "react"  // 追加
   },
   "exclude": [
     "**/*.spec.ts",
