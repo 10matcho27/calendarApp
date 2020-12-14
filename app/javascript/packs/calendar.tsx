@@ -37,6 +37,7 @@ const Cal = () => {
       array.push(1)
     }
 
+
     let [cango,setCango] = useState(array)
 
     const clicked = (array: any[],index: number) => {
@@ -46,43 +47,86 @@ const Cal = () => {
       return copy
     }
 
-    const changearr = (array,index,data) => {
+    const changearrGetJson = (array,index,data) => {
       let copy = [...array]
       copy[index] = data
       return copy
     }
 
+    const changeArr = array => {
+      let copy = [...array]
+      return copy
+    }
+
     function getJson(){
       for(let i=0;i<=30;i++){
-      const url = 'https://lit-woodland-09250.herokuapp.com/months/'+(i+1)+'.json'
+      const url = '/months/'+(i+1)+'.json'
       axios.get(url).then(
         results=>{
           array[(results.data.id)-1]=results.data.date
           console.log(results.data.date)
-          setCango(changearr(array,results.data.id,results.data.date))
+          setCango(changearrGetJson(array,results.data.id,results.data.date))
         }
       )
       }
     }
 
     function setJson(){
-      const data = {date:-1};
-      const url = 'https://lit-woodland-09250.herokuapp.com/months/1.json'
+      axios.defaults.headers.common = {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      };
+      for(let id=0;id<=30;id++){
+      const modify = { id:id+1,date:array[id] };
       axios
-          .post(url,data)
-          .then(res => {
-            alert("OK")
-          })
+        .patch('/months/'+(id+1)+'.json',modify)
+        .then(res => {
+          console.log("ok")
+        })
+        .catch(error => {
+          alert("Error")
+          console.log(error);
+
+        })
+      }
+      setCango(changeArr(cango));
     }
 
+    function initJson(){
+      axios.defaults.headers.common = {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      };
+      for(let id=0;id<=30;id++){
+      const modify = { id:id+1,date:1 };
+      axios
+        .patch('/months/'+(id+1)+'.json',modify)
+        .then(res => {
+          console.log("ok")
+        })
+        .catch(error => {
+          alert("Error")
+          console.log(error);
+        })
+      }
+      getJson()
+    }
+    
     function alertSubmitFunction(){
-      alert("Submitted")
+      alert("Submitting")
       setJson()
     }
+
     function alertInitFunction(){
       alert("init")
       getJson()
     }
+
+    function allDel(){
+      alert("delete")
+      initJson()
+    }
+
     return (
       <div>
           {format(targetDate, 'y年M月')}
@@ -117,6 +161,11 @@ const Cal = () => {
             <button onClick={() => alertInitFunction()}>
               init from db
             </button>
+          <th>
+            <button onClick={() => allDel()}>
+              delete
+            </button>
+          </th>
       </div>
     );
   }

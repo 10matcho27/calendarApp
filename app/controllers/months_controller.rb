@@ -25,8 +25,10 @@ class MonthsController < ApplicationController
   # POST /months
   # POST /months.json
   def create
-    @month = Month.create(date: params[:date,])
-    render json: @months
+    respond_to do |format|
+      if @month.update(month_params)
+        format.json { render :show, status: :ok, location: @month }
+      end
   end
 
   # PATCH/PUT /months/1
