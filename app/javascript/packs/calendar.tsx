@@ -54,7 +54,7 @@ const Cal = () => {
 
     function getJson(){
       for(let i=0;i<=30;i++){
-      const url = 'https://lit-woodland-09250.herokuapp.com/'+(i+1)+'.json'
+      const url = 'https://lit-woodland-09250.herokuapp.com/months/'+(i+1)+'.json'
       axios.get(url).then(
         results=>{
           array[(results.data.id)-1]=results.data.date
