@@ -12,6 +12,8 @@ import startOfMonth from 'date-fns/startOfMonth'
 import endOfMonth from 'date-fns/endOfMonth'
 import ReactDOM from 'react-dom'
 import { any, bool } from 'prop-types'
+import axios from 'axios';
+
 
 const Cal = () => {
 
@@ -27,25 +29,60 @@ const Cal = () => {
       
     const targetDate = new Date()
     const calendar = getCalendarArray(targetDate)
-    
-    
 
     //init//
-    let canGo = []
-    const changebool = (boole,index) => {
-        if(boole==true){
-            canGo[index] = false
-            console.log("t")
-        }else{
-            canGo[index] = true
-            console.log("f")
-        }
+    let array = []
 
-        return canGo
+    for(let i = 0; i<=30 ; i++){
+      array.push(1)
     }
 
-    let [cango,setCango] = useState([])
+    let [cango,setCango] = useState(array)
 
+    const clicked = (array: any[],index: number) => {
+      let copy = [...array]
+      copy[index] = copy[index]*(-1)
+      console.log(copy)
+      return copy
+    }
+
+    const changearr = (array,index,data) => {
+      let copy = [...array]
+      copy[index] = data
+      return copy
+    }
+
+    function getJson(){
+      for(let i=0;i<=30;i++){
+      const url = 'http://localhost/months/'+(i+1)+'.json'
+      axios.get(url).then(
+        results=>{
+          array[(results.data.id)-1]=results.data.date
+          console.log(results.data.date)
+          setCango(changearr(array,results.data.id,results.data.date))
+        }
+      )
+      }
+    }
+
+    function setJson(){
+      const data = {date:-1};
+      const url = 'http://localhost/months/1.json'
+      axios
+          .post(url,data)
+          .then(res => {
+            alert("OK")
+          })
+    }
+
+    function alertSubmitFunction(){
+      alert("Submitted")
+      setJson()
+    }
+    function alertInitFunction(){
+      alert("init")
+      getJson()
+    }
     return (
       <div>
           {format(targetDate, 'y年M月')}
@@ -60,9 +97,10 @@ const Cal = () => {
                 <tr key={rowNum}>
                   {weekRow.map(date => (
                       <td key={getDay(date)}>
-                        <button onClick={() => setCango(changebool(cango[getDate(date)],getDate(date)))}>
+                        <button onClick={() => setCango(clicked(cango,getDate(date)-1))}>
+                        
                         {getDate(date)}
-                        <td>{cango[getDate(date)]==true? "o" : "x"}</td>
+                        <td>{cango[getDate(date)-1]==1 ? "o" : "x"}</td>
                       </button>
                       </td>
                     ))}
@@ -70,6 +108,15 @@ const Cal = () => {
                 ))}
               </tbody>
           </table>
+          
+          <th>
+            <button onClick={() => alertSubmitFunction()}>
+              提出
+            </button>
+          </th>
+            <button onClick={() => alertInitFunction()}>
+              init from db
+            </button>
       </div>
     );
   }

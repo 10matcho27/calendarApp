@@ -1,9 +1,7 @@
-class CreateUsers < ActiveRecord::Migration[6.1]
+class AddColumnToDates < ActiveRecord::Migration[6.1]
   def change
     create_table :users do |t|
-      t.boolean :date
-
-      t.timestamps
+      t.boolean :dates, array: true default: []
     end
   end
 end

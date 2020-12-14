@@ -1,0 +1,24 @@
+<%= form_with(model: month) do |form| %>
+  <!--
+  <% if month.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(month.errors.count, "error") %> prohibited this month from being saved:</h2>
+
+      <ul>
+        <% month.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  -->
+  <div class="field">
+    <%= form.label :date %>
+    <%= form.number_field :date %>
+  </div>
+  
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+
+<% end %>

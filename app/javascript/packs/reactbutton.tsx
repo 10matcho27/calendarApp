@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
-
-const Example = () => {
-  // Declare a new state variable, which we'll call "count"
+import ReactDOM from 'react-dom'
+  
+  const Button = () =>{
   const [count, setCount] = useState(0);
+  function alertSubmitFunction(){
+    
+    alert("Submitted")
 
+  }
+  
   return (
     <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
+      <button onClick={() => alertSubmitFunction()}>
+      提出
       </button>
     </div>
-  );
-}
+  );}
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+    ReactDOM.render(
+      < Button/>,
+      document.body.appendChild(document.createElement('div')),
+    )
+  })
