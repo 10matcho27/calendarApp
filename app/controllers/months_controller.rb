@@ -1,11 +1,10 @@
 class MonthsController < ApplicationController
-  before_action :set_month, only: [:months, :show, :edit, :update, :destroy]
+  before_action :set_month, only: [:show, :edit, :update, :destroy]
 
   # GET /months
   # GET /months.json
   def index
     @months = Month.all
-    #render json: @months
   end
 
   # GET /months/1
@@ -25,10 +24,6 @@ class MonthsController < ApplicationController
   # POST /months
   # POST /months.json
   def create
-    respond_to do |format|
-      if @month.update(month_params)
-        format.json { render :show, status: :ok, location: @month }
-      end
   end
 
   # PATCH/PUT /months/1
