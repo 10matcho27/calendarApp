@@ -63,9 +63,9 @@ const Cal = () => {
       const url = '/months/'+(i+1)+'.json'
       axios.get(url).then(
         results=>{
-          array[(results.data.id)-1]=results.data.date
+          cango[i]=results.data.date
           console.log(results.data.date)
-          setCango(changearrGetJson(array,results.data.id,results.data.date))
+          setCango(changearrGetJson(cango,i,results.data.date))
         }
       )
       }
@@ -77,11 +77,10 @@ const Cal = () => {
         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
       };
       for(let id=0;id<=30;id++){
-      const modify = { id:id+1,date:array[id] };
+      const modify = {date:cango[id] };
       axios
-        .patch('/months/'+(id+1)+'.json',modify)
+        .put('/months/'+(id+1)+'.json',modify)
         .then(res => {
-          console.log("ok")
         })
         .catch(error => {
           alert("Error")
@@ -98,11 +97,10 @@ const Cal = () => {
         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
       };
       for(let id=0;id<=30;id++){
-      const modify = { id:id+1,date:1 };
+      const modify = {date:1};
       axios
-        .patch('/months/'+(id+1)+'.json',modify)
+        .put('/months/'+(id+1)+'.json',modify)
         .then(res => {
-          console.log("ok")
         })
         .catch(error => {
           alert("Error")
