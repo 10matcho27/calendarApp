@@ -47,12 +47,31 @@ const Cal = () => {
       return copy
     }
 
+    const changearrGetJson = (array,index,data) => {
+      let copy = [...array]
+      copy[index] = data
+      return copy
+    }
+
     const changeArr = array => {
       let copy = [...array]
       return copy
     }
 
     function getJson(){
+      for(let i=0;i<=30;i++){
+      const url = '/months/'+(i+1)+'.json'
+      axios.get(url).then(
+        results=>{
+          cango[i]=results.data.date
+          console.log(results.data.date)
+          setCango(changearrGetJson(cango,i,results.data.date))
+        }
+      )
+      }
+    }
+
+    function getJsonTest(){
       const url = '/months.json';
       axios.get(url).then(
         results => {
@@ -103,7 +122,7 @@ const Cal = () => {
           console.log(error);
         })
       }
-      getJson()
+      getJsonTest()
     }
     
     function alertSubmitFunction(){
@@ -113,7 +132,7 @@ const Cal = () => {
 
     function alertInitFunction(){
       alert("init")
-      getJson()
+      getJsonTest()
     }
 
     function allDel(){
