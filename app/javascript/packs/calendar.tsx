@@ -11,7 +11,7 @@ import eachWeekOfInterval from 'date-fns/eachWeekOfInterval'
 import startOfMonth from 'date-fns/startOfMonth'
 import endOfMonth from 'date-fns/endOfMonth'
 import ReactDOM from 'react-dom'
-import { any, bool } from 'prop-types'
+import { any, bool, string } from 'prop-types'
 import axios from 'axios';
 
 
@@ -47,28 +47,24 @@ const Cal = () => {
       return copy
     }
 
-    const changearrGetJson = (array,index,data) => {
-      let copy = [...array]
-      copy[index] = data
-      return copy
-    }
-
     const changeArr = array => {
       let copy = [...array]
       return copy
     }
 
     function getJson(){
-      for(let i=0;i<=30;i++){
-      const url = '/months/'+(i+1)+'.json'
+      const url = '/months.json';
       axios.get(url).then(
-        results=>{
-          cango[i]=results.data.date
-          console.log(results.data.date)
-          setCango(changearrGetJson(cango,i,results.data.date))
+        results => {
+          const string_json = JSON.stringify(results);
+          const from_json = JSON.parse(string_json);
+          for(let i=0;i<=30;i++){
+            array[i] = from_json.data[i].date;
+          }
+          console.log(array)
+          setCango(changeArr(array))
         }
       )
-      }
     }
 
     function setJson(){
